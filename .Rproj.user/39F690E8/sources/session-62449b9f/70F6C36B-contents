@@ -1,0 +1,26 @@
+# 自動檢查並安裝缺失的套件
+if (!require("dplyr")) install.packages("dplyr")
+if (!require("ggplot2")) install.packages("ggplot2")
+
+library(dplyr)
+library(ggplot2)
+
+# 讀取資料 (請確認檔案已放入 Project 目錄)
+data <- read.csv("1132_scoreDis_share.csv", stringsAsFactors = FALSE)
+
+# 處理分數並分組
+data_processed <- data %>%
+  mutate(score_group = cut(score, 
+                           breaks = c(seq(0, 100, by = 10), Inf), 
+                           right = FALSE, 
+                           labels = c("0-9", "10-19", "20-29", "30-39", "40-49", 
+                                      "50-59", "60-69", "70-79", "80-89", "90-99", "100+"))) %>%
+  count(score_group, .drop = FALSE)
+
+# 繪圖
+ggplot(data_processed, aes(x = score_group, y = n, fill = score_group)) +
+  geom_bar(stat = "identity", color = "black", show.legend = FALSE) +
+  geom_text(aes(label = n), vjust = -0.5, fontface = "bold") +
+  scale_fill_viridis_d(option = "plasma") +
+  labs(title = "學期成績分佈圖", x = "分數區間", y = "人數") +
+  theme_minimal(base_family = "Heiti TC")
