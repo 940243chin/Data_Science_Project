@@ -47,6 +47,11 @@ summary <- function(input_path, output_path){
   write.csv(result, output_path, row.names = FALSE)
   
 }
+
+# 本地測試用
+#summary("input1.csv", "output1.csv")
+#summary("input2.csv", "output2.csv")
+#summary("input3.csv", "output3.csv")
 ```
 
 ### cmd
