@@ -1,9 +1,10 @@
-# Data Science Homework 1: R Basics & Function Implementation
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/_9P3RhIz)
+# hw1. Familiar with R basics & submit homework on GitHub
 
-## 專案描述 (Project Description)
-這是一個 R 語言的入門作業。主要任務是撰寫一個名為 `summary` 的函式，該函式能夠讀取指定的 CSV 原始資料，計算其中「體重 (weight)」與「身高 (height)」的最大值，並將結果格式化後輸出至新的 CSV 檔案。
+#### Name: 辛柏慶
+#### ID: 114753220
 
-## 功能說明 (Features)
+## Description
 * **自動讀取與處理**：支援相對路徑讀取 CSV 檔案。
 * **檔名自動擷取**：自動解析輸入路徑，擷取檔案名稱作為輸出內容。
 * **數值計算**：
@@ -13,16 +14,70 @@
 * **四捨五入**：所有數值均處理至小數點後兩位。
 * **標準化輸出**：產出的 CSV 格式符合 Gradescope 自動評分系統要求（不含列編號）。
 
-## 程式碼結構 (Code Logic)
-程式碼主要分為五個步驟：
-1. **讀取資料**：使用 `read.csv()` 載入數據。
-2. **字串處理**：利用 `basename()` 與 `gsub()` 提取乾淨的檔案名稱（去除路徑與副檔名）。
-3. **統計運算**：使用 `max(..., na.rm = TRUE)` 取得最大值，並配合 `round()` 進行格式化。
-4. **資料框封裝**：將處理好的數據包裝進 `data.frame`，確保欄位標籤為 `set`, `weight`, `height`。
-5. **檔案寫出**：使用 `write.csv(..., row.names = FALSE)` 儲存結果。
-
-## 如何執行 (How to Run)
-在 R 環境中載入 `hw1.R` 後，呼叫以下函式：
-
+### Code for reference
 ```R
-summary("path/to/input.csv", "path/to/output.csv")
+summary <- function(input_path, output_path){
+  # 1. 讀取資料
+  # 使用 read.csv 讀取輸入路徑的資料
+  data <- read.csv(input_path)
+  
+  # 2. 取得輸入檔案的名稱
+  #gsub(要被換掉的目標, 換成什麼, 原始資料)，中間的""什麼都沒打代表刪除
+  #basename(input_path): 這個函數可以幫你把 C:/Users/Desktop/input1.csv 縮短成 input1.csv。這在處理不固定路徑時非常有用。
+  file_name <- gsub(".csv","",basename(input_path))
+  
+  # 3. 計算最大值並四捨五入到小數點後兩位
+  #data:物件名稱前面把整個csv檔存入data變數，＄用來進入或指向某個物件，用它來從資料框（data frame）中抽出特定的**「一整欄」，weight代表我要存取的具體欄位標籤
+  #data$weight具體意思請到 data 這個資料表裡面，把名為 weight 的那一欄資料全部拿出來。
+  #na,rm是NA remove的縮寫，TRUE代表請做移除動作，na.rm 移除沒有填的數值，如我input中有資料沒填如果沒用na.rm那輸出就會是NA，用於跳過缺失值，繼續分析
+  max_weight <- round(max(data$weight, na.rm = TRUE), 2)
+  max_height <- round(max(data$height, na.rm = TRUE), 2)
+  
+  
+  # 4. 建立輸出的資料框 (Data Frame)
+  # 欄位名稱必須完全符合範例：set, weight, height
+  result <- data.frame(
+    set = file_name,
+    weight = max_weight,
+    height = max_height
+  )
+  
+  # 5. 寫出 CSV 檔案
+  #write再R中用來存檔，result要存的物件，output_path:代表檔案要存到哪裡跟叫什麼名字，row.name:把預設的列標號刪掉
+  write.csv(result, output_path, row.names = FALSE)
+  
+}
+```
+
+### cmd
+```R
+summary("input1.csv", "output1.csv")
+```
+
+### Read an input file
+
+The input data will include other numeric & category columns besides weight and height.
+
+#### examples: `input1.csv`
+| persons | weight | height | gender |
+| --- | --- | --- | --- |
+| person1 | 92.24459 | 182.0007 | F |
+| person2 | 79.88506 | 199.0311 | F |
+| person3 | 65.59031 | 180.8477 | F |
+| … | … | … | … |
+| person25 | 80.16016 | 196.6961 | M |
+| person26 | 87.0112 | 174.8087 | F |
+
+### Output a summary file
+
+Please follow the same format as the output1.csv, i.e., round the number to two digits.
+
+#### examples: `output1.csv`
+| set | weight | height |
+| --- | --- | --- |
+| input1 | 99.76 | 199.03 |
+
+
+## Reference
+Please list the code and its reference, i.e., comment like # ChatGPT, respond to “your prompt,” on February 16, 2023.  
+If your code is similar to others and lacks detailed comments, you may lose up to 10 points or possibly receive a zero.
