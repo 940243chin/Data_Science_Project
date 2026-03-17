@@ -79,5 +79,4 @@ Please follow the same format as the output1.csv, i.e., round the number to two 
 
 
 ## Reference
-Please list the code and its reference, i.e., comment like # ChatGPT, respond to “your prompt,” on February 16, 2023.  
-If your code is similar to others and lacks detailed comments, you may lose up to 10 points or possibly receive a zero.
+Gemini, https://gemini.google.com/share/ae7d1494be46 , on March 13, 2026.
